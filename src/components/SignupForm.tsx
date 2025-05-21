@@ -5,9 +5,11 @@ export const SignupForm = () => {
     const [loading, setLoading] = useState<boolean>(false)
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
+    const [first_name, setFirst_name] = useState<string>('')
+    const [last_name, setLast_name] = useState<string>('')
     const [confirmPassword, setConfirmPassword] = useState<string>('')
 
-    const handleSumbit = async (event: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         console.log(email, password)
 
@@ -15,6 +17,12 @@ export const SignupForm = () => {
         const { error } = await supabase.auth.signUp({
             email,
             password,
+            options: {
+                data: {
+                    first_name,
+                    last_name,
+                },
+            },
         })
         setLoading(false)
         if (error) {
@@ -36,15 +44,30 @@ export const SignupForm = () => {
     }
 
     let buttonDisabled = true
-    if (email !== '' && password !== '' && confirmPassword !== '' && password === confirmPassword) {
+    if (email !== ''
+            && first_name !== ''
+            && last_name !== ''
+            && password !== ''
+            && confirmPassword !== ''
+            && password === confirmPassword) {
         buttonDisabled = false
+    }
+
+    const handleFirstNameInput = (event: FormEvent<HTMLInputElement>) => {
+        setFirst_name(event.currentTarget.value)
+    }
+
+    const handleLastNameInput = (event: FormEvent<HTMLInputElement>) => {
+        setLast_name(event.currentTarget.value)
     }
 
     return (
         <div>
             <h2>Login</h2>
-            <form onSubmit={handleSumbit}>
+            <form onSubmit={handleSubmit}>
                 <input type="email" placeholder="Email" onChange={handleEmailInput}/>
+                <input type="text" placeholder="First Name" onChange={handleFirstNameInput}/>
+                <input type="text" placeholder="Last Name" onChange={handleLastNameInput}/>
                 <input type="password" placeholder="Password" onChange={handlePasswordInput}/>
                 <input type="password" placeholder="Confirm Password" onChange={handleConfirmPasswordInput}/>
                 <button disabled={buttonDisabled || loading}>Signup</button>
