@@ -1,5 +1,5 @@
 import { type FormEvent, useState } from 'react';
-import { supabase } from '../supabaseClient.ts';
+import { userService } from '../services/user.ts';
 
 export const LoginForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -11,15 +11,8 @@ export const LoginForm = () => {
     console.log(email, password);
 
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    await userService.signIn({ email, password });
     setLoading(false);
-    if (error) {
-      alert(error.message);
-      return;
-    }
 
   };
 
