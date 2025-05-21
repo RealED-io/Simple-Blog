@@ -8,8 +8,6 @@ export const LoginForm = () => {
 
   const handleSumbit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(email, password);
-
     setLoading(true);
     await userService.signIn({ email, password });
     setLoading(false);

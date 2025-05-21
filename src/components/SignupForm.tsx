@@ -11,8 +11,6 @@ export const SignupForm = () => {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(email, password);
-
     setLoading(true);
     await userService.signUp({ email, password, first_name, last_name });
     setLoading(false);
