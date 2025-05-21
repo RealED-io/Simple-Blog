@@ -4,6 +4,7 @@
 import './App.css';
 import { LoginForm } from './components/LoginForm.tsx';
 import { SignupForm } from './components/SignupForm.tsx';
+import { LogoutButton } from './components/LogoutButton.tsx';
 
 function App() {
 
@@ -12,6 +13,7 @@ function App() {
       <h1>Hello World</h1>
       <LoginForm />
       <SignupForm />
+      <LogoutButton />
     </div>
   );
 }

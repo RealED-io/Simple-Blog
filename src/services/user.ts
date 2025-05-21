@@ -18,7 +18,7 @@ export const userService = {
     if (error) {
       alert(error.message);
     } else {
-      alert('Invalid email or password!');
+      alert('Login Successful!');
     }
   },
 
@@ -37,7 +37,16 @@ export const userService = {
     if (error) {
       alert(error.message);
     } else {
-      alert('Invalid credentials!');
+      alert('Signup Successful!');
+    }
+  },
+
+  async logOut(): Promise<void> {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      alert(error.message);
+    } else {
+      alert('Logout Successful!');
     }
   },
 };
