@@ -13,7 +13,7 @@ export interface SignupPayload {
 }
 
 export const userService = {
-  async signIn(loginPayload: LoginPayload): Promise<void> {
+  async login(loginPayload: LoginPayload): Promise<void> {
     const { error } = await supabase.auth.signInWithPassword(loginPayload);
     if (error) {
       alert(error.message);
@@ -22,7 +22,7 @@ export const userService = {
     }
   },
 
-  async signUp(signupPayload: SignupPayload): Promise<void> {
+  async signup(signupPayload: SignupPayload): Promise<void> {
     const { email, password, first_name, last_name } = signupPayload;
     const { error } = await supabase.auth.signUp({
       email,
@@ -41,7 +41,7 @@ export const userService = {
     }
   },
 
-  async logOut(): Promise<void> {
+  async logout(): Promise<void> {
     const { error } = await supabase.auth.signOut();
     if (error) {
       alert(error.message);

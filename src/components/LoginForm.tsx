@@ -9,7 +9,7 @@ export const LoginForm = () => {
   const handleSumbit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
-    await userService.signIn({ email, password });
+    await userService.login({ email, password });
     setLoading(false);
 
   };

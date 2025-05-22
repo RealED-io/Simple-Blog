@@ -2,7 +2,7 @@ import { userService } from '../services/user.ts';
 
 export const LogoutButton = () => {
   const handleLogout = async () => {
-    await userService.logOut();
+    await userService.logout();
   };
 
   return (
