@@ -16,7 +16,7 @@ function App() {
   const [ showSignup, setShowSignup ] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
-  const { user } = useSelector((state: RootState) => state.auth);
+  const { user, user_profile } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     const fetchSession = async () => {
@@ -46,7 +46,7 @@ function App() {
   if (user) {
     return (
       <div>
-        <span>Hello {user.email}</span>
+        <span>Hello {user_profile?.first_name} {user_profile?.last_name}</span>
         <LogoutButton />
       </div>
     );
