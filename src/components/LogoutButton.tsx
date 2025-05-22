@@ -1,8 +1,14 @@
-import { userService } from '../services/userService.ts';
+import { logoutUser } from '../features/user/authThunk.ts';
+import { useAppDispatch } from '../app/hooks.ts';
+import { useNavigate } from 'react-router-dom';
 
 export const LogoutButton = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const handleLogout = async () => {
-    await userService.logout();
+    dispatch(logoutUser());
+    navigate('/login');
   };
 
   return (
