@@ -15,18 +15,21 @@ export default function Navbar() {
   };
 
   return (
-    <nav style={{ display: 'flex', gap: '1rem', padding: '1rem', position: 'sticky', top: 0 }}>
+    <nav style={{ display: 'flex', gap: '1rem', padding: '1rem', position: 'sticky', top: 0, backgroundColor: '#eee' }}>
       <Link to="/blogs">Blogs</Link>
       {session ? (
         <>
           <Link to="/blogs/create">New Post</Link>
-          <button onClick={handleLogout}>Logout</button>
+          <div style={{ marginLeft: 'auto' }}>
+            <button onClick={handleLogout}>Logout</button>
+          </div>
         </>
       ) : (
-        <>
+        <div style={{ marginLeft: 'auto' }}>
           <Link to="/login">Login</Link>
+          <span> | </span>
           <Link to="/signup">Signup</Link>
-        </>
+        </div>
       )}
     </nav>
   );
