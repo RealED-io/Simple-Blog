@@ -1,67 +1,60 @@
-import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit';
-import { blogService } from '../../services/blogService.ts';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { type Blog } from '../../services/blogService.ts';
 
-export interface Blog {
-  id: string;
-  title: string;
-  content: string;
-  is_public: boolean;
-  author: string;
-  user_id: string;
-  created_at: string;
-}
 
 interface BlogState {
   blogs: Blog[];
+  page: number;
+  total: number;
+  limit: number;
   loading: boolean;
   error: string | null;
-  page: number;
-  filter: 'public' | 'user' | 'all';
 }
 
 const initialState: BlogState = {
   blogs: [],
+  page: 1,
+  total: 0,
+  limit: 5,
   loading: false,
   error: null,
-  page: 1,
-  filter: 'public',
 };
 
-export const fetchBlogs = createAsyncThunk(
-  'blogs/fetchBlogs',
-  async ({ page, filter }: { page: number; filter: 'public' | 'user' | 'all' }) => {
-    return await blogService.list({ page, filter });
-  },
-);
-
-const blogSlice = createSlice({
-  name: 'blogs',
+export const blogSlice = createSlice({
+  name: 'blog',
   initialState,
   reducers: {
-    setPage: (state, action: PayloadAction<number>) => {
-      state.page = action.payload;
+    setBlogs(state, action: PayloadAction<Blog[]>) {
+      state.blogs = action.payload;
     },
-    setFilter: (state, action: PayloadAction<'public' | 'user' | 'all'>) => {
-      state.filter = action.payload;
-      state.page = 1;
+    setPagination(state, action: PayloadAction<{ page: number; total: number }>) {
+      state.page = action.payload.page;
+      state.total = action.payload.total;
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchBlogs.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchBlogs.fulfilled, (state, action) => {
-        state.loading = false;
-        state.blogs = action.payload;
-      })
-      .addCase(fetchBlogs.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || 'Failed to fetch blogs';
-      });
+    removeBlogOptimistic(state, action: PayloadAction<string>) {
+      state.blogs = state.blogs.filter((b) => b.id !== action.payload);
+      state.total = Math.max(state.total - 1, 0);
+    },
+    addBlogOptimistic(state, action: PayloadAction<Blog>) {
+      state.blogs = [action.payload, ...state.blogs];
+      state.total += 1;
+    },
+    updateBlogOptimistic(state, action: PayloadAction<Blog>) {
+      const index = state.blogs.findIndex((b) => b.id === action.payload.id);
+      if (index !== -1) {
+        state.blogs[index] = action.payload;
+      }
+    },
+
   },
 });
 
-export const { setPage, setFilter } = blogSlice.actions;
+export const {
+  setBlogs,
+  setPagination,
+  removeBlogOptimistic,
+  addBlogOptimistic,
+  updateBlogOptimistic,
+} = blogSlice.actions;
+
 export default blogSlice.reducer;

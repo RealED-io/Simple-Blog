@@ -1,26 +1,34 @@
 import { supabase } from '../supabaseClient.ts';
 
+export interface Blog {
+  id: string;
+  title: string;
+  content: string;
+  is_public: boolean;
+  author: string;
+  user_id: string;
+  created_at: string;
+}
+
 export const blogService = {
-  async create(title: string, content: string, isPublic: boolean) {
-    const { error } = await supabase.from('blogs').insert([{ title, content, is_public: isPublic }]);
-    if (error) throw error;
+  async create(blog: Omit<Blog, 'id' | 'created_at' | 'author'>): Promise<Blog> {
+    const { data, error } = await supabase.from('blogs').insert(blog).select().single();
+    if (error) throw new Error(error.message);
+    return data;
   },
 
   async get(id: string) {
     const { data, error } = await supabase.from('blogs').select('*').eq('id', id).single();
-    if (error) throw error;
+    if (error) throw new Error(error.message);
     return data;
   },
 
-  async update(id: string, title: string, content: string, isPublic: boolean) {
-    const { error } = await supabase
-      .from('blogs')
-      .update({ title, content, is_public: isPublic })
-      .eq('id', id);
-    if (error) throw error;
+  async update(id: string, blog: Partial<Blog>): Promise<void> {
+    const { error } = await supabase.from('blogs').update(blog).eq('id', id);
+    if (error) throw new Error(error.message);
   },
 
-  async remove(id: string) {
+  async delete(id: string) {
     const { error } = await supabase.from('blogs').delete().eq('id', id);
     if (error) throw error;
   },
@@ -34,10 +42,14 @@ export const blogService = {
     limit?: number;
     filter?: 'public' | 'user' | 'all';
   }) {
+
+    const from = (page - 1) * limit;
+    const to = from + limit - 1;
+
     let query = supabase
       .from('blog_with_author')
-      .select('*')
-      .range((page - 1) * limit, page * limit - 1)
+      .select('*', { count: 'exact' })
+      .range(from, to)
       .order('created_at', { ascending: false });
 
     if (filter === 'public') {
@@ -47,8 +59,8 @@ export const blogService = {
       query = query.eq('user_id', user?.id);
     }
 
-    const { data, error } = await query;
-    if (error) throw error;
-    return data;
+    const { data, count, error } = await query;
+    if (error) throw new Error(error.message);
+    return { blogs: data ?? [], total: count ?? 0 };
   },
 };
