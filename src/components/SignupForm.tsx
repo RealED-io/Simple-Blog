@@ -1,5 +1,8 @@
 import { type FormEvent, useState } from 'react';
-import { userService } from '../services/user.ts';
+import { useAppDispatch } from '../app/hooks.ts';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../app/store.ts';
+import { signupUser } from '../features/user/authThunk.ts';
 
 export const SignupForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -9,10 +12,13 @@ export const SignupForm = () => {
   const [last_name, setLast_name] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
 
+  const dispatch = useAppDispatch();
+  const { error } = useSelector((state: RootState) => state.auth);
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
-    await userService.signup({ email, password, first_name, last_name });
+    dispatch(signupUser({ email, password, first_name, last_name }));
     setLoading(false);
   };
 
@@ -28,8 +34,8 @@ export const SignupForm = () => {
 
   return (
     <div>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
+      <h2>Signup</h2>
+      <form onSubmit={handleSubmit} autoComplete="off">
         <input
           type="email"
           placeholder="Email"
@@ -56,7 +62,8 @@ export const SignupForm = () => {
           onChange={(event) => setConfirmPassword(event.target.value)}
         />
         <button disabled={buttonDisabled || loading}>Signup</button>
-        {loading && <div>Loading...</div>}
+        {loading && <p>Loading...</p>}
+        {error && <p style={{ color: 'red' }}>{error}</p>}
       </form>
     </div>
   );

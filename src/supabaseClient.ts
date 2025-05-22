@@ -5,4 +5,4 @@ export const supabase = createClient(
   import.meta.env.VITE_SUPABASE_ANON_KEY,
 );
 
-export type { Session, User } from '@supabase/supabase-js';
+export type { Session, User, AuthError } from '@supabase/supabase-js';

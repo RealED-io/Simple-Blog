@@ -1,22 +1,28 @@
 import { type FormEvent, useState } from 'react';
-import { userService } from '../services/user.ts';
+import { useSelector } from 'react-redux';
+import { useAppDispatch } from '../app/hooks.ts';
+import type { RootState } from '../app/store.ts';
+import { loginUser } from '../features/user/authThunk.ts';
 
 export const LoginForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const handleSumbit = async (event: FormEvent<HTMLFormElement>) => {
+  const dispatch = useAppDispatch();
+  const { error } = useSelector((state: RootState) => state.auth);
+
+  const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
-    await userService.login({ email, password });
+    dispatch(loginUser({ email, password }));
     setLoading(false);
   };
 
   return (
     <div>
       <h2>Login</h2>
-      <form onSubmit={handleSumbit}>
+      <form onSubmit={handleLogin}>
         <input
           type="email"
           placeholder="Email"
@@ -28,7 +34,8 @@ export const LoginForm = () => {
           onChange={(event) => setPassword(event.target.value)}
         />
         <button>Login</button>
-        {loading && <div>Loading...</div>}
+        {loading && <p>Loading...</p>}
+        {error && <p style={{ color: 'red' }}>{error}</p>}
       </form>
     </div>
   );

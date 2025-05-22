@@ -7,25 +7,33 @@ import { SignupForm } from './components/SignupForm.tsx';
 import { LogoutButton } from './components/LogoutButton.tsx';
 import { supabase } from './supabaseClient.ts';
 import { useEffect, useState } from 'react';
-import type { Session } from '@supabase/supabase-js';
+import { useAppDispatch } from './app/hooks.ts';
+import { clearSession, setSession } from './features/user/authSlice.ts';
+import { useSelector } from 'react-redux';
+import type { RootState } from './app/store.ts';
 
 function App() {
-  const [session, setSession] = useState<Session | null>(null);
+  const [ showSignup, setShowSignup ] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+
+  const { user } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     const fetchSession = async () => {
-      const { data, error } = await supabase.auth.getSession();
+      const { data: authResponse, error } = await supabase.auth.getSession();
       if (error) {
         alert(error.message);
-      } else {
-        setSession(data.session);
       }
+      dispatch(setSession(authResponse));
     };
     fetchSession();
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
-        setSession(session);
+        if (session)
+          dispatch(setSession({ session, user: session.user }));
+        else
+          dispatch(clearSession());
       },
     );
 
@@ -33,18 +41,28 @@ function App() {
       authListener.subscription.unsubscribe();
     };
 
-  }, []);
+  }, [dispatch]);
 
-  console.log(session);
-
-  return (
-    <div>
-      <h1>Hello World</h1>
-      <LoginForm />
-      <SignupForm />
-      <LogoutButton />
-    </div>
-  );
+  if (user) {
+    return (
+      <div>
+        <span>Hello {user.email}</span>
+        <LogoutButton />
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        {showSignup ?
+          <SignupForm /> :
+          <LoginForm />
+        }
+        <button onClick={() => setShowSignup(!showSignup)}>
+          {showSignup ? 'Login': 'Sign Up'}
+        </button>
+      </div>
+    );
+  }
 }
 
 export default App;
