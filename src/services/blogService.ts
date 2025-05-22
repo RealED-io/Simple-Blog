@@ -3,10 +3,7 @@ import { supabase } from '../supabaseClient.ts';
 export const blogService = {
   async create(title: string, content: string, isPublic: boolean) {
     const { error } = await supabase.from('blogs').insert([{ title, content, is_public: isPublic }]);
-    if (error) {
-      console.log(error);
-      throw error;
-    };
+    if (error) throw error;
   },
 
   async get(id: string) {
@@ -30,7 +27,7 @@ export const blogService = {
 
   async list({
     page = 1,
-    limit = 10,
+    limit = 3,
     filter = 'public',
   }: {
     page?: number;
@@ -38,8 +35,8 @@ export const blogService = {
     filter?: 'public' | 'user' | 'all';
   }) {
     let query = supabase
-      .from('blogs')
-      .select('*', { count: 'exact' })
+      .from('blog_with_author')
+      .select('*')
       .range((page - 1) * limit, page * limit - 1)
       .order('created_at', { ascending: false });
 

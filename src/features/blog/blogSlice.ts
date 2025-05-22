@@ -1,11 +1,12 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit';
 import { blogService } from '../../services/blogService.ts';
 
-interface Blog {
+export interface Blog {
   id: string;
   title: string;
   content: string;
   is_public: boolean;
+  author: string;
   user_id: string;
   created_at: string;
 }
