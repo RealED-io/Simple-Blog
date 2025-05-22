@@ -11,23 +11,22 @@ export const LoginForm = () => {
     setLoading(true);
     await userService.login({ email, password });
     setLoading(false);
-
-  };
-
-  const handleEmailInput = (event: FormEvent<HTMLInputElement>) => {
-    setEmail(event.currentTarget.value);
-  };
-
-  const handlePasswordInput = (event: FormEvent<HTMLInputElement>) => {
-    setPassword(event.currentTarget.value);
   };
 
   return (
     <div>
       <h2>Login</h2>
       <form onSubmit={handleSumbit}>
-        <input type="email" placeholder="Email" onChange={handleEmailInput}/>
-        <input type="password" placeholder="Password" onChange={handlePasswordInput}/>
+        <input
+          type="email"
+          placeholder="Email"
+          onChange={(event) => setEmail(event.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          onChange={(event) => setPassword(event.target.value)}
+        />
         <button>Login</button>
         {loading && <div>Loading...</div>}
       </form>

@@ -16,18 +16,6 @@ export const SignupForm = () => {
     setLoading(false);
   };
 
-  const handleEmailInput = (event: FormEvent<HTMLInputElement>) => {
-    setEmail(event.currentTarget.value);
-  };
-
-  const handlePasswordInput = (event: FormEvent<HTMLInputElement>) => {
-    setPassword(event.currentTarget.value);
-  };
-
-  const handleConfirmPasswordInput = (event: FormEvent<HTMLInputElement>) => {
-    setConfirmPassword(event.currentTarget.value);
-  };
-
   let buttonDisabled = true;
   if (email !== ''
       && first_name !== ''
@@ -38,23 +26,35 @@ export const SignupForm = () => {
     buttonDisabled = false;
   }
 
-  const handleFirstNameInput = (event: FormEvent<HTMLInputElement>) => {
-    setFirst_name(event.currentTarget.value);
-  };
-
-  const handleLastNameInput = (event: FormEvent<HTMLInputElement>) => {
-    setLast_name(event.currentTarget.value);
-  };
-
   return (
     <div>
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
-        <input type="email" placeholder="Email" onChange={handleEmailInput}/>
-        <input type="text" placeholder="First Name" onChange={handleFirstNameInput}/>
-        <input type="text" placeholder="Last Name" onChange={handleLastNameInput}/>
-        <input type="password" placeholder="Password" onChange={handlePasswordInput}/>
-        <input type="password" placeholder="Confirm Password" onChange={handleConfirmPasswordInput}/>
+        <input
+          type="email"
+          placeholder="Email"
+          onChange={(event) => setEmail(event.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="First Name"
+          onChange={(event) => setFirst_name(event.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Last Name"
+          onChange={(event) => setLast_name(event.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          onChange={(event) => setPassword(event.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Confirm Password"
+          onChange={(event) => setConfirmPassword(event.target.value)}
+        />
         <button disabled={buttonDisabled || loading}>Signup</button>
         {loading && <div>Loading...</div>}
       </form>
