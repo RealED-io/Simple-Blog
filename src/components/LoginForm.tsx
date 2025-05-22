@@ -1,8 +1,8 @@
 import { type FormEvent, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useAppDispatch } from '../app/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../app/hooks.ts';
 import type { RootState } from '../app/store.ts';
 import { loginUser } from '../features/user/authThunk.ts';
+import { useNavigate } from 'react-router-dom';
 
 export const LoginForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -10,12 +10,14 @@ export const LoginForm = () => {
   const [password, setPassword] = useState<string>('');
 
   const dispatch = useAppDispatch();
-  const { error } = useSelector((state: RootState) => state.auth);
+  const { error } = useAppSelector((state: RootState) => state.auth);
+  const navigate = useNavigate();
 
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
     dispatch(loginUser({ email, password }));
+    navigate('/blogs');
     setLoading(false);
   };
 

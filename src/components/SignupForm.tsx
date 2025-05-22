@@ -1,8 +1,8 @@
 import { type FormEvent, useState } from 'react';
-import { useAppDispatch } from '../app/hooks.ts';
-import { useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../app/hooks.ts';
 import type { RootState } from '../app/store.ts';
 import { signupUser } from '../features/user/authThunk.ts';
+import { useNavigate } from 'react-router-dom';
 
 export const SignupForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -13,12 +13,15 @@ export const SignupForm = () => {
   const [confirmPassword, setConfirmPassword] = useState<string>('');
 
   const dispatch = useAppDispatch();
-  const { error } = useSelector((state: RootState) => state.auth);
+  const { error } = useAppSelector((state: RootState) => state.auth);
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
     dispatch(signupUser({ email, password, first_name, last_name }));
+    navigate('/blogs');
+
     setLoading(false);
   };
 
