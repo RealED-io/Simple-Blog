@@ -1,7 +1,7 @@
 import { type FormEvent, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../app/hooks.ts';
 import type { RootState } from '../app/store.ts';
-import { loginUser } from '../features/user/authThunk.ts';
+import { loginUser } from '../features/user/authThunks.ts';
 import { useNavigate } from 'react-router-dom';
 
 export const LoginForm = () => {

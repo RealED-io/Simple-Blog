@@ -1,4 +1,4 @@
-import { logoutUser } from '../features/user/authThunk.ts';
+import { logoutUser } from '../features/user/authThunks.ts';
 import { useAppDispatch } from '../app/hooks.ts';
 import { useNavigate } from 'react-router-dom';
 
