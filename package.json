@@ -1,7 +1,7 @@
 {
   "name": "simple-blog",
   "homepage": "https://realed-io.github.io/Simple-Blog/",
-  "private": true,
+  "private": false,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
