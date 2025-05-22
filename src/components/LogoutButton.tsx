@@ -1,4 +1,4 @@
-import { userService } from '../services/user.ts';
+import { userService } from '../services/userService.ts';
 
 export const LogoutButton = () => {
   const handleLogout = async () => {

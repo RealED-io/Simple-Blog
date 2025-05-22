@@ -18,7 +18,6 @@ interface AuthResponse {
   user: User;
 }
 
-
 export const userService = {
   async login(loginPayload: LoginPayload): Promise<AuthResponse> {
     const { data: { session, user }, error } = await supabase.auth.signInWithPassword(loginPayload);

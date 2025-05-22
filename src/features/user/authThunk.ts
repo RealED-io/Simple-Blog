@@ -1,5 +1,5 @@
 import { type AppDispatch } from '../../app/store';
-import { userService, type LoginPayload, type SignupPayload } from '../../services/user';
+import { userService, type LoginPayload, type SignupPayload } from '../../services/userService.ts';
 import { setSession, clearSession, setLoading, setError } from './authSlice';
 
 export const loginUser = (payload: LoginPayload) => async (dispatch: AppDispatch) => {
