@@ -1,5 +1,6 @@
 {
   "name": "simple-blog",
+  "homepage": "https://realed-io.github.com/simple-blog",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,7 +8,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
@@ -27,6 +29,7 @@
     "eslint": "^9.27.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
+    "gh-pages": "^6.3.0",
     "globals": "^16.0.0",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.32.1",
