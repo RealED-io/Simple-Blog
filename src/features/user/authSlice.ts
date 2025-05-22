@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import type { Session, User } from '../../supabaseClient.ts';
+import type { Session, User } from '@supabase/auth-js';
 
 interface AuthState {
   session: Session | null;

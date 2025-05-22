@@ -1,4 +1,5 @@
-import { type Session, type User, supabase } from '../supabaseClient.ts';
+import { supabase } from '../supabaseClient.ts';
+import type { Session, User } from '@supabase/auth-js';
 
 export interface LoginPayload {
   email: string;
