@@ -9,12 +9,11 @@ import { supabase } from './supabaseClient.ts';
 import { useEffect } from 'react';
 import { useAppDispatch } from './app/hooks.ts';
 import { clearSession, setSession } from './features/user/authSlice.ts';
-// import { useSelector } from 'react-redux';
-// import type { RootState } from './app/store.ts';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar.tsx';
 import { BlogList } from './components/BlogList.tsx';
 import BlogForm from './components/BlogForm.tsx';
+import { Container } from '@mui/material';
 
 
 function App() {
@@ -45,20 +44,20 @@ function App() {
   return (
     <div>
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Navigate to="/blogs" />} />
-        <Route path="/blogs" element={<BlogList />} />
-        <Route path="/blogs/create" element={<BlogForm />} />
-        <Route path="/blogs/:id/edit" element={<BlogForm />} />
-        <Route path="/blogs/:id/delete" element={<BlogForm />} />
-        <Route path="/login" element={<LoginForm />} />
-        <Route path="/signup" element={<SignupForm />} />
-        <Route path="*" element={<h1>404: Page Not Found</h1>} />
-      </Routes>
+      <Container>
+        <Routes>
+          <Route path="/" element={<Navigate to="/blogs" />} />
+          <Route path="/blogs" element={<BlogList />} />
+          <Route path="/blogs/create" element={<BlogForm />} />
+          <Route path="/blogs/:id/edit" element={<BlogForm />} />
+          <Route path="/blogs/:id/delete" element={<BlogForm />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/signup" element={<SignupForm />} />
+          <Route path="*" element={<h1>404: Page Not Found</h1>} />
+        </Routes>
+      </Container>
     </div>
   );
-
 }
-
 
 export default App;

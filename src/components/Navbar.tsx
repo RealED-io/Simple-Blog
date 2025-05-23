@@ -2,27 +2,42 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { type RootState } from '../app/store';
 import { LogoutButton } from './LogoutButton.tsx';
+import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
 
 export default function Navbar() {
   const session = useSelector((state: RootState) => state.auth.session);
 
   return (
-    <nav style={{ display: 'flex', gap: '1rem', padding: '1rem', position: 'sticky', top: 0, backgroundColor: '#eee' }}>
-      <Link to="/blogs">Blogs</Link>
-      {session ? (
-        <>
-          <Link to="/blogs/create">New Post</Link>
-          <div style={{ marginLeft: 'auto' }}>
-            <LogoutButton />
-          </div>
-        </>
-      ) : (
-        <div style={{ marginLeft: 'auto' }}>
-          <Link to="/login">Login</Link>
-          <span> | </span>
-          <Link to="/signup">Signup</Link>
-        </div>
-      )}
-    </nav>
+    <AppBar position="sticky" color="default" elevation={1}>
+      <Toolbar sx={{ display: 'flex', gap: 2 }}>
+        <Button component={Link} to="/blogs" color="inherit">
+          Blogs
+        </Button>
+
+        {session ? (
+          <>
+            <Button component={Link} to="/blogs/create" color="inherit">
+              New Post
+            </Button>
+
+            <Box sx={{ marginLeft: 'auto' }}>
+              <LogoutButton />
+            </Box>
+          </>
+        ) : (
+          <Box sx={{ marginLeft: 'auto', display: 'flex', gap: 1, alignItems: 'center' }}>
+            <Button component={Link} to="/login" color="inherit">
+              Login
+            </Button>
+            <Typography variant="body2" color="text.secondary">
+              |
+            </Typography>
+            <Button component={Link} to="/signup" color="inherit">
+              Signup
+            </Button>
+          </Box>
+        )}
+      </Toolbar>
+    </AppBar>
   );
 }

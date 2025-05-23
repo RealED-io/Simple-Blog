@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useAppDispatch } from '../app/hooks.ts';
 import { editBlog } from '../features/blog/blogThunks';
 import { type Blog } from '../services/blogService.ts';
-import { Button, Checkbox, Container, FormControlLabel, TextField, Typography } from '@mui/material';
+import { Button, Checkbox, Container, FormControlLabel, Stack, TextField, Typography } from '@mui/material';
 
 type Props = {
   blog: Blog;
@@ -27,7 +27,10 @@ export const BlogEditForm = ({ blog, onCancel }: Props) => {
   return (
     <Container>
       <form onSubmit={handleSubmit} style={{ marginTop: '1em' }}>
-        <Typography variant="h4">Edit Blog</Typography>
+        <Typography variant="h4" gutterBottom>
+          Edit Blog
+        </Typography>
+
         <TextField
           label="Title"
           variant="outlined"
@@ -36,7 +39,7 @@ export const BlogEditForm = ({ blog, onCancel }: Props) => {
           onChange={(e) => setTitle(e.target.value)}
           required
         />
-        <br />
+
         <TextField
           label="Content"
           multiline
@@ -46,7 +49,9 @@ export const BlogEditForm = ({ blog, onCancel }: Props) => {
           value={content}
           onChange={(e) => setContent(e.target.value)}
           required
+          sx={{ mt: 2 }}
         />
+
         <FormControlLabel
           control={
             <Checkbox
@@ -56,11 +61,23 @@ export const BlogEditForm = ({ blog, onCancel }: Props) => {
           }
           label="Public"
         />
-        <div>
-          <Button variant="outlined" type="submit">Save</Button>
-          <Button variant="outlined" type="button" onClick={onCancel}>Cancel</Button>
-        </div>
+
+        <Stack
+          direction="row"
+          spacing={1}
+          useFlexGap
+          flexWrap="wrap"
+          sx={{ mt: 2 }}
+        >
+          <Button variant="outlined" type="submit">
+            Save
+          </Button>
+          <Button variant="outlined" type="button" onClick={onCancel}>
+            Cancel
+          </Button>
+        </Stack>
       </form>
     </Container>
+
   );
 };

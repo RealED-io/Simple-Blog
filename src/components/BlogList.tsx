@@ -4,6 +4,7 @@ import { useAppSelector, useAppDispatch } from '../app/hooks.ts';
 import { fetchBlogs, deleteBlog } from '../features/blog/blogThunks';
 import { useSearchParams } from 'react-router-dom';
 import { BlogEditForm } from './BlogEditForm.tsx';
+import { Box, Button, Paper, Stack, Typography } from '@mui/material';
 
 export const BlogList = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -32,53 +33,98 @@ export const BlogList = () => {
 
   return (
     <div>
-      <h2>Blogs</h2>
+      <Typography variant="h2" sx={{ fontWeight: 'bold' }}>Blogs</Typography>
       {userId && (
         <div>
-          <button onClick={() => updateParams(1, 'all')} disabled={filter === 'all'}>
+          <Button
+            variant="text"
+            onClick={() => updateParams(1, 'all')}
+            disabled={filter === 'all'}
+          >
             All
-          </button>
-          <button onClick={() => updateParams(1, 'public')} disabled={filter === 'public'}>
+          </Button>
+          <Button
+            variant="text"
+            onClick={() => updateParams(1, 'public')}
+            disabled={filter === 'public'}
+          >
             Public
-          </button>
-          <button onClick={() => updateParams(1, 'user')} disabled={filter === 'user'}>
+          </Button>
+          <Button
+            variant="text"
+            onClick={() => updateParams(1, 'user')}
+            disabled={filter === 'user'}
+          >
             Private
-          </button>
+          </Button>
         </div>
       )}
 
 
-      <ul>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb:4 }}>
         {blogs.map((b) => (
-          <li key={b.id}>
-            <h3>{b.title}</h3>
-            <small>by: {b.author}</small>
-            <p>{b.content}</p>
+          <Paper
+            key={b.id}
+            elevation={3}
+            sx={{ p: 2 }}
+          >
+            <Typography
+              variant="h6"
+              sx={{ fontWeight: 'bold' }}
+            >{b.title}
+            </Typography>
+            <Typography
+              variant="subtitle2"
+              color="text.secondary"
+              gutterBottom
+            >by: {b.author}
+            </Typography>
+            <Typography
+              variant="body1"
+              component="p"
+              sx={{ m:2 }}
+            >{b.content}
+            </Typography>
             {(filter === 'user' || b.user_id === userId) && (
-              <div>
-                <button onClick={() => handleDelete(b.id)}>Delete</button>
-                <button onClick={() => setEditingId(b.id)}>Edit</button>
-              </div>
+              <Stack
+                direction="row"
+                spacing={1}
+                useFlexGap
+                flexWrap="wrap"
+              >
+                <Button variant="outlined" onClick={() => handleDelete(b.id)}>Delete</Button>
+                <Button variant="outlined" onClick={() => setEditingId(b.id)}>Edit</Button>
+              </Stack>
             )}
             {editingId === b.id && (
               <BlogEditForm blog={b} onCancel={() => setEditingId(null)} />
             )}
-          </li>
+          </Paper>
         ))}
-      </ul>
+      </Box>
 
-      <div>
-        <button onClick={() => updateParams(currentPage - 1)} disabled={currentPage <= 1}>
+      <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
+        <Button
+          variant="contained"
+          onClick={() => updateParams(currentPage - 1)}
+          disabled={currentPage <= 1}
+        >
           Back
-        </button>
-        <span> Page {currentPage} of {totalPages} </span>
-        <button
+        </Button>
+        <Typography
+          variant="overline"
+          sx={{ flexGrow: 1, textAlign: 'center' }}
+        >
+          Page {currentPage} of {totalPages}
+        </Typography>
+        <Button
+          variant="contained"
           onClick={() => updateParams(currentPage + 1)}
           disabled={currentPage >= totalPages}
         >
           Next
-        </button>
-      </div>
+        </Button>
+      </Stack>
     </div>
   );
 };

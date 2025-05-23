@@ -1,6 +1,7 @@
 import { logoutUser } from '../features/user/authThunks.ts';
 import { useAppDispatch } from '../app/hooks.ts';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '@mui/material';
 
 export const LogoutButton = () => {
   const dispatch = useAppDispatch();
@@ -12,6 +13,6 @@ export const LogoutButton = () => {
   };
 
   return (
-    <button onClick={handleLogout}>Logout</button>
+    <Button variant="text" onClick={handleLogout}>Logout</Button>
   );
 };

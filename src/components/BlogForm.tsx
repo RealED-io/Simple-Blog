@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { blogService } from '../services/blogService';
 import type { RootState } from '../app/store.ts';
 import { useAppSelector, useAppDispatch } from '../app/hooks.ts';
 import { createBlog } from '../features/blog/blogThunks.ts';
+import { Button, Checkbox, Container, FormControlLabel, Stack, TextField, Typography } from '@mui/material';
 
 export default function BlogForm() {
   const { id } = useParams();
@@ -12,6 +13,8 @@ export default function BlogForm() {
   const [isPublic, setIsPublic] = useState(false);
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const user = useAppSelector((state: RootState) => state.auth.user);
 
 
@@ -29,7 +32,7 @@ export default function BlogForm() {
     e.preventDefault();
     if (!user) return;
 
-    dispatch(
+    await dispatch(
       createBlog({
         title,
         content,
@@ -37,42 +40,58 @@ export default function BlogForm() {
         user_id: user.id,
       }),
     );
-
-    setTitle('');
-    setContent('');
-    setIsPublic(true);
+    navigate('/blogs');
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h3>Create New Blog</h3>
-      <div>
-        <input
+    <Container>
+      <form onSubmit={handleSubmit} style={{ marginTop: '1em' }}>
+        <Typography variant="h2" sx={{ fontWeight: 'bold' }}>New Blog</Typography>
+
+        <TextField
+          label="Title"
+          variant="outlined"
+          fullWidth
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="Title"
           required
         />
-      </div>
-      <div>
-        <textarea
+
+        <TextField
+          label="Content"
+          multiline
+          rows={4}
+          variant="outlined"
+          fullWidth
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          placeholder="Content"
           required
+          sx={{ mt: 2 }}
         />
-      </div>
-      <div>
-        <label>
-          <input
-            type="checkbox"
-            checked={isPublic}
-            onChange={(e) => setIsPublic(e.target.checked)}
-          />
-          Public
-        </label>
-      </div>
-      <button type="submit">Create</button>
-    </form>
+
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={isPublic}
+              onChange={(e) => setIsPublic(e.target.checked)}
+            />
+          }
+          label="Public"
+        />
+
+        <Stack
+          direction="row"
+          spacing={1}
+          useFlexGap
+          flexWrap="wrap"
+          sx={{ mt: 2 }}
+        >
+          <Button variant="outlined" type="submit">
+            Save
+          </Button>
+        </Stack>
+      </form>
+    </Container>
+
   );
 }

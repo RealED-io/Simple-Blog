@@ -1,6 +1,7 @@
-import { StrictMode } from 'react';
+// import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 // import './index.css';
+import './borderless.css';
 import App from './App.tsx';
 
 import { Provider } from 'react-redux';
@@ -12,13 +13,13 @@ import { createTheme, ThemeProvider } from '@mui/material';
 const theme = createTheme();
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <Provider store={store}>
+  // <StrictMode>
+  <Provider store={store}>
+    <ThemeProvider theme={theme}>
       <BrowserRouter>
-        <ThemeProvider theme={theme}>
-          <App />
-        </ThemeProvider>
+        <App />
       </BrowserRouter>
-    </Provider>
-  </StrictMode>,
+    </ThemeProvider>
+  </Provider>,
+  // </StrictMode>,
 );
