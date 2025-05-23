@@ -3,7 +3,8 @@ import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
-import stylisticTs from '@stylistic/eslint-plugin-ts'
+
+import stylistic from '@stylistic/eslint-plugin'
 
 export default tseslint.config(
   { ignores: ['dist'] },
@@ -17,11 +18,15 @@ export default tseslint.config(
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
-        '@stylistic/ts': stylisticTs,
+      '@stylistic/ts': stylistic,
+      '@stylistic/js': stylistic,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
         '@stylistic/ts/indent': ['error', 2],
+        '@stylistic/js/jsx-max-props-per-line': ['error', { maximum: 1, when: 'multiline' }],
+        '@stylistic/js/jsx-first-prop-new-line': ['error', 'multiline'],
+        '@stylistic/js/jsx-closing-bracket-location': ['error', 'tag-aligned'],
         "comma-dangle": ['error', 'always-multiline'],
         '@stylistic/ts/quotes': ['error', 'single'],
         '@stylistic/ts/semi': ['error', 'always'],
