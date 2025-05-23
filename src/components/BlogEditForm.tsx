@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useAppDispatch } from '../app/hooks.ts';
 import { editBlog } from '../features/blog/blogThunks';
 import { type Blog } from '../services/blogService.ts';
+import { Button, Checkbox, Container, FormControlLabel, TextField, Typography } from '@mui/material';
 
 type Props = {
   blog: Blog;
@@ -24,30 +25,42 @@ export const BlogEditForm = ({ blog, onCancel }: Props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginTop: '1em' }}>
-      <h4>Edit Blog</h4>
-      <input
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        required
-      />
-      <textarea
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        required
-      />
-      <label>
-        <input
-          type="checkbox"
-          checked={isPublic}
-          onChange={(e) => setIsPublic(e.target.checked)}
+    <Container>
+      <form onSubmit={handleSubmit} style={{ marginTop: '1em' }}>
+        <Typography variant="h4">Edit Blog</Typography>
+        <TextField
+          label="Title"
+          variant="outlined"
+          fullWidth
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
         />
-        Public
-      </label>
-      <div>
-        <button type="submit">Save</button>
-        <button type="button" onClick={onCancel}>Cancel</button>
-      </div>
-    </form>
+        <br />
+        <TextField
+          label="Content"
+          multiline
+          rows={4}
+          variant="outlined"
+          fullWidth
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          required
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={isPublic}
+              onChange={(e) => setIsPublic(e.target.checked)}
+            />
+          }
+          label="Public"
+        />
+        <div>
+          <Button variant="outlined" type="submit">Save</Button>
+          <Button variant="outlined" type="button" onClick={onCancel}>Cancel</Button>
+        </div>
+      </form>
+    </Container>
   );
 };
