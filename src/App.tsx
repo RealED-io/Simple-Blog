@@ -9,20 +9,16 @@ import { supabase } from './supabaseClient.ts';
 import { useEffect } from 'react';
 import { useAppDispatch } from './app/hooks.ts';
 import { clearSession, setSession } from './features/user/authSlice.ts';
-
 // import { useSelector } from 'react-redux';
 // import type { RootState } from './app/store.ts';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar.tsx';
 import { BlogList } from './components/BlogList.tsx';
 import BlogForm from './components/BlogForm.tsx';
 
 
 function App() {
-  // const [ showSignup, setShowSignup ] = useState<boolean>(false);
   const dispatch = useAppDispatch();
-
-  // const { user, user_profile } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     const fetchSession = async () => {
@@ -33,7 +29,6 @@ function App() {
       dispatch(setSession(authResponse));
     };
     fetchSession();
-
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         if (session)
@@ -42,15 +37,13 @@ function App() {
           dispatch(clearSession());
       },
     );
-
     return () => {
       authListener.subscription.unsubscribe();
     };
-
   }, [dispatch]);
 
   return (
-    <BrowserRouter>
+    <div>
       <Navbar />
       <Routes>
         <Route path="/" element={<Navigate to="/blogs" />} />
@@ -60,30 +53,11 @@ function App() {
         <Route path="/blogs/:id/delete" element={<BlogForm />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/signup" element={<SignupForm />} />
+        <Route path="*" element={<h1>404: Page Not Found</h1>} />
       </Routes>
-    </BrowserRouter>
+    </div>
   );
 
-  // if (user) {
-  //   return (
-  //     <div>
-  //       <span>Hello {user_profile?.first_name} {user_profile?.last_name}</span>
-  //       <LogoutButton />
-  //     </div>
-  //   );
-  // } else {
-  //   return (
-  //     <div>
-  //       {showSignup ?
-  //         <SignupForm /> :
-  //         <LoginForm />
-  //       }
-  //       <button onClick={() => setShowSignup(!showSignup)}>
-  //         {showSignup ? 'Login': 'Sign Up'}
-  //       </button>
-  //     </div>
-  //   );
-  // }
 }
 
 
