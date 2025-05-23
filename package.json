@@ -12,6 +12,9 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^7.1.0",
     "@reduxjs/toolkit": "^2.8.2",
     "@supabase/supabase-js": "^2.49.7",
     "react": "^19.1.0",
