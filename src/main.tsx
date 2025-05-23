@@ -16,7 +16,7 @@ createRoot(document.getElementById('root')!).render(
   // <StrictMode>
   <Provider store={store}>
     <ThemeProvider theme={theme}>
-      <BrowserRouter>
+      <BrowserRouter basename="/Simple-Blog">
         <App />
       </BrowserRouter>
     </ThemeProvider>
